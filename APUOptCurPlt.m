@@ -2,15 +2,15 @@
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  % @file               EngEquFuelCurPlt.m
  % @author             New Energy Automobile Team
- % @version            V1.0  
- % @data               18-July-2019 
+ % @version            V1.0
+ % @data               18-July-2019
  % @brief              Drawing APU Optimal working curve
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  % @attention
  %
  %THE PRESENT SCRIPT IS FOR GUIDANCE ONLY AIMS AT PROVIDING DEVELOPER WITH
  %CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
- %TIME. AS A RESULT, OUR TEAM SHALL NOT BE HELD LIABLE FOR ANY DIRECT, 
+ %TIME. AS A RESULT, OUR TEAM SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
  %INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
  %FROM THE CONTENT OF SUCH SCRIPT AND/OR THE USE MADE BY CUSTOMERS OF THE
  %CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -24,14 +24,14 @@
 %}
 
 %{
- % @brief Drawing engine fuel consumption curve   
+ % @brief Drawing engine fuel consumption curve
  % @param engSpd: (Engine speed vector)                    rpm
  %        @arg vector n*1 or 1*n
  %        engTorq: (Engine torque vector)                  Nm
  %        @arg vector n*1 or 1*n
  %        engB(Engine minimum fuel consumption rate)       g/kwh
  %        @arg vector n*1 or 1*n
- 
+
  %        motorSpd: (Motor speed vector)                   rpm
  %        @arg vector n*1 or 1*n
  %        motorTorq(Motor torque vector)                   Nm
@@ -65,10 +65,10 @@ function [bestSpd,gentrq] = APUOptCurPlt(engSpd,engTrq,engB,motorSpd,motorTrq,mo
     %Maximum torque of genset at different speeds
     gensetMaxTrq = min([temp1;temp2]);  %vector 2Xlength(gensetMapSpd)
     [genxi,genyi] = meshgrid(gensetMapSpd,gensetMapTrq);
-    gczi = griddata(motorSpd,gcMapTrq,gcMapEff,genxi,genyi,'cubic'); 
+    gczi = griddata(motorSpd,gcMapTrq,gcMapEff,genxi,genyi,'cubic');
     gczi2 = griddata(motorSpd,gcMapTrq,gcMapEff,genxi,genyi,'nearest');
     tem = isnan(gczi); id = find(tem==1); gczi(id) = gczi2(id);   % Use the cubic interpolation to appear Nan, replace with nearest
-    clear id tem 
+    clear id tem
     engzi = griddata(engMapSpd,engMapTrq,engMapB,genxi,genyi,'cubic'); engzi2 = griddata(engMapSpd,engMapTrq,engMapB,genxi,genyi,'nearest');
     tem = isnan(engzi); id = find(tem==1); engzi(id) = engzi2(id);   % Use the cubic interpolation to appear Nan, replace with nearest
 %     [meshgcMapTrq,meshgcMapSpd] = meshgrid(gcMapTrq,gcMapSpd);
@@ -93,7 +93,12 @@ function [bestSpd,gentrq] = APUOptCurPlt(engSpd,engTrq,engB,motorSpd,motorTrq,mo
         bestIndex = find(min(BSFCs)==BSFCs, 1 );
         bestSpd(IndexPwr) = spds(bestIndex);
     end
-    
+
+
+
+
+
+
     gensetPwr(length(gensetPwr)) = gensetMaxPwr;
     if gensetMaxPwr == max(gensetMapSpd.*gensetMaxTrq/9549)
         bestSpd(length(gensetPwr)) = gensetMapSpd(find((gensetMapSpd.*gensetMaxTrq/9549)==gensetMaxPwr));
@@ -107,7 +112,7 @@ function [bestSpd,gentrq] = APUOptCurPlt(engSpd,engTrq,engB,motorSpd,motorTrq,mo
     EngEquFuelCurPlt(engSpd,engTrq,engB);
     EngOptCur(engSpd,engTrq,engB);
     MotorEquEffCurPlt(motorSpd,motorTrq,motorEff);
-    xlabel('Speed£¨r/min£©');ylabel('Torque£¨Nm£©');title('Engine&&Motor Map');
+    xlabel('Speedï¿½ï¿½r/minï¿½ï¿½');ylabel('Torqueï¿½ï¿½Nmï¿½ï¿½');title('Engine&&Motor Map');
     temp1 = max(max(engMapSpd),max(gcMapSpd));
     temp2 = min(min(engMapSpd),min(gcMapSpd));
     temp3 = max(max(engMapTrq),max(gcMapTrq));
@@ -118,7 +123,7 @@ end
 
 
 %{
- % @brief Drawing motor fuel consumption curve   
+ % @brief Drawing motor fuel consumption curve
  % @param spd: (Engine speed vector)                    rpm
  %        @arg vector n*1 or 1*n
  %        torq: (Engine torque vector)                  Nm
@@ -148,7 +153,7 @@ function [xi,yi,zi] = MotorEquEffCurPlt(spd,trq,eff,varargin)
 %     v = [120:10:220 220:20:300 300:10:400 400:30:600];
 %     hf = figure; set(hf,'color',[1 1 1]);
     [c,~] = contour(xi,yi,zi,v);
-    xlabel('Motor speed£¨r/min£©');ylabel('Motor torque£¨Nm£©');title('Motor map');
+    xlabel('Motor speedï¿½ï¿½r/minï¿½ï¿½');ylabel('Motor torqueï¿½ï¿½Nmï¿½ï¿½');title('Motor map');
     hold on; clabel(c);
     % Maximum engine operating curve
     [fcMaxSpd,fcMaxTrq] = EngMaxCharact(x,y);
@@ -157,10 +162,3 @@ function [xi,yi,zi] = MotorEquEffCurPlt(spd,trq,eff,varargin)
     hold on;grid on;
     plot(fcMapSpdin,fcMapTrqin,'r-','LineWidth',3);
 end
-
-
-    
-    
-    
-    
-    
